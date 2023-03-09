@@ -39,7 +39,7 @@ class ResCompanyJurisdictionPadron(models.Model):
                 partner_id = self.env['res.partner'].search([('vat', '=', values[4])], limit=1)
                 if partner_id:
                     vals = {
-                        'numero_comprobante': '00',
+                        'numero_comprobante': '',
                         # 'alicuota_retencion': float(alicuot_ret),
                         'alicuota_percepcion': values[8].replace(",", "."),
                         'partner_id': partner_id.id,
