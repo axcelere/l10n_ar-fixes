@@ -36,7 +36,7 @@ class ResCompanyJurisdictionPadron(models.Model):
             cant+= 1
             if cant <= total_len:
                 values = line.split(";")
-                partner_id = self.env['res.partner'].search([('vat', '=', values[4])])
+                partner_id = self.env['res.partner'].search([('vat', '=', values[4])], limit=1)
                 if partner_id:
                     vals = {
                         'numero_comprobante': '00',
