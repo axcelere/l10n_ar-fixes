@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_company_jurisdiction_padron_view_extended" model="ir.ui.view" >
+        <field name="name">res.company.jurisdiction.padron.view.extended</field>
+        <field name="inherit_id" ref="l10n_ar_account_withholding.view_res_company_jurisdiction_padron_form"/>
+        <field name="model">res.company.jurisdiction.padron</field>
+        <field name="arch" type="xml">
+            <field name="file_padron" position="after">
+                <button name="generate_alicuota" string="Generar alicuota" type="object" class="btn-primary"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
