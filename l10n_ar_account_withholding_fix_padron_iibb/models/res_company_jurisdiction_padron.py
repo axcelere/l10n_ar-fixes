@@ -30,7 +30,8 @@ class ResCompanyJurisdictionPadron(models.Model):
         filename = self.pdf_filename.replace('.zip', '')
         path_file = "/tmp/%s/%s.txt" % (filename, filename)
         with open(path_file, "r") as fp:
-            for line in fp.readlines():
+            for line_bytes in fp:
+                line = line_bytes.decode("us-ascii")
                 _logger.log(25, line)
                 values = line.split(";")
                 partner_id = Partner.search([('vat', '=', values[3])], limit=1)
