@@ -8,6 +8,11 @@
         <field name="arch" type="xml">
             <field name="file_padron" position="after">
                 <button name="generate_alicuota" string="Generar alicuota" type="object" class="btn-primary"/>
+                <button name="generate_alicuota_fromzip" string="Generar alicuota de zip" type="object" class="btn-primary"/>
+                <field name="pdf_filename" invisible="1"/>
+            </field>
+            <field name="file_padron" position="attributes">
+                <attribute name="filename">pdf_filename</attribute>
             </field>
         </field>
     </record>
