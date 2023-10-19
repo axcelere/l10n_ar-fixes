@@ -32,7 +32,6 @@ class ResCompanyJurisdictionPadron(models.Model):
         path_file = "/tmp/%s/%s.txt" % (filename, filename)
         with open(path_file, "r") as fp:
             for line_bytes in fp:
-                # line = line_bytes.decode("us-ascii")
                 line = line_bytes.strip()
                 _logger.log(25, line)
                 values = line.split(";")
@@ -48,6 +47,7 @@ class ResCompanyJurisdictionPadron(models.Model):
                         'from_date': self.l10n_ar_padron_from_date,
                         'to_date': self.l10n_ar_padron_to_date,
                     }
+                    _logger.log(25, "Nueva alicuota a partner: %s" % partner_id.display_name)
                     Alicuot.sudo().create(vals)
 
     def generate_alicuota(self):
