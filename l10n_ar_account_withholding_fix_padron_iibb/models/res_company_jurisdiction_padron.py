@@ -48,7 +48,7 @@ class ResCompanyJurisdictionPadron(models.Model):
                         'from_date': self.l10n_ar_padron_from_date,
                         'to_date': self.l10n_ar_padron_to_date,
                     }
-                    Alicuot.create(vals)
+                    Alicuot.sudo().create(vals)
 
     def generate_alicuota(self):
         stream = BytesIO(base64.b64decode(self.file_padron)).read()
