@@ -29,7 +29,7 @@ class ResCompanyJurisdictionPadron(models.Model):
         self.descompress_file(self.file_padron)
         filename = self.pdf_filename.replace('.zip', '')
         path_file = "/tmp/%s/%s.txt" % (filename, filename)
-        with open(path_file, "r") as fp:
+        with open(path_file, "r", errors="replace") as fp:
             line_number = 1
             for line_bytes in fp:
                 line = line_bytes.strip()
