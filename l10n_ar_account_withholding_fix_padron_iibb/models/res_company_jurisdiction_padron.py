@@ -1,5 +1,4 @@
 import base64
-import pandas as pd
 import logging
 from io import BytesIO
 
@@ -31,9 +30,12 @@ class ResCompanyJurisdictionPadron(models.Model):
         filename = self.pdf_filename.replace('.zip', '')
         path_file = "/tmp/%s/%s.txt" % (filename, filename)
         with open(path_file, "r") as fp:
+            line_number = 1
             for line_bytes in fp:
                 line = line_bytes.strip()
                 _logger.log(25, line)
+                _logger.log(25, "************LINEA %s************" % str(line_number))
+                line_number += 1
                 values = line.split(";")
                 partner_id = Partner.search([('vat', '=', values[3])], limit=1)
                 if partner_id:
