@@ -39,10 +39,10 @@ class ResCompanyJurisdictionPadron(models.Model):
         partners_vat = partners.mapped('vat')
         partner_dict = {partner.vat: partner.id for partner in partners}
 
-        with open(path_file, "r") as input_f:
+        with open(path_file, "r", errors="replace") as input_f:
             lines_to_keep = [line for line in input_f if not self._condition_toclean_line(line, partners_vat)]
 
-        with open(temp_path_file, "w") as output_f:
+        with open(temp_path_file, "w", errors="replace") as output_f:
             output_f.writelines(lines_to_keep)
 
         os.replace(temp_path_file, path_file)
