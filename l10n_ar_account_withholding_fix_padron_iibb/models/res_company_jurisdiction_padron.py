@@ -77,8 +77,8 @@ class ResCompanyJurisdictionPadron(models.Model):
         cant = 0
         for line in str(stream).split("\\r\\n"):
             cant += 1
-            if cant <= total_len:
-                values = line.split(";")
+            values = line.split(";")
+            if cant <= total_len and len(values) >= 8:
                 partner_id = self.env['res.partner'].search([('vat', '=', values[4])], limit=1)
                 if partner_id:
                     vals = {
