@@ -29,13 +29,12 @@ class ResCompanyJurisdictionPadron(models.Model):
         # 26092023;01102023;31102023;20000163989;D;S;N;0,00;0,00;00;00;ETCHEVERRIGARAY JUAN  CARLOS
         # fecha;fecha_inicio;fecha_fin;vat;D;S;N;alicuota_percepcion;alicuota_retencion
         Alicuot = self.env['res.partner.arba_alicuot']
-        Partner = self.env['res.partner']
         self.descompress_file(self.file_padron)
         filename = self.pdf_filename.replace('.zip', '')
         path_file = "/tmp/%s/%s.txt" % (filename, filename)
         temp_path_file = "/tmp/%s/%s_temp.txt" % (filename, filename)
 
-        partners = self.env['res.partner'].search([])
+        partners = self.env['res.partner'].search([('is_company', '=', True)])
         partners_vat = partners.mapped('vat')
         partner_dict = {partner.vat: partner.id for partner in partners}
 
@@ -70,6 +69,7 @@ class ResCompanyJurisdictionPadron(models.Model):
                     })
                     _logger.log(25, "Nueva alicuota a partner: %s" % partner_id)
             Alicuot.sudo().create(bulk_vals)
+            return True
 
     def generate_alicuota(self):
         stream = BytesIO(base64.b64decode(self.file_padron)).read()
