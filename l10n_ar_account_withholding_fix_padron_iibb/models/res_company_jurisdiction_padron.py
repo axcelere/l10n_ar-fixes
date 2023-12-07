@@ -92,3 +92,33 @@ class ResCompanyJurisdictionPadron(models.Model):
                         'to_date': self.l10n_ar_padron_to_date,
                     }
                     self.env['res.partner.arba_alicuot'].create(vals)
+
+
+    def generate_alicuota_salta(self):
+        stream = BytesIO(base64.b64decode(self.file_padron)).read()
+        total_len = len(str(stream).split("\\r\\n")) - 1
+        cant = 0
+        for line in str(stream).split("\\r\\n"):
+            cant += 1
+            values = line.split("\\t")
+            if cant <= total_len and len(values) >= 3:
+                partner_id = self.env['res.partner'].search([('vat', '=', values[0])], limit=1)
+                if partner_id:
+                    if values[2] == 'JU' and partner_id.l10n_ar_gross_income_type != 'local':
+                        partner_id.l10n_ar_gross_income_type = 'local'
+                    elif values[2] == 'CM' and partner_id.l10n_ar_gross_income_type != 'multilateral':
+                        partner_id.l10n_ar_gross_income_type = 'multilateral'
+                    elif partner_id.l10n_ar_gross_income_type != 'exempt':
+                        partner_id.l10n_ar_gross_income_type = 'exempt'
+                    if values[2] in ['CM', 'JU']:
+                        vals = {
+                            'numero_comprobante': '',
+                            # 'alicuota_retencion': float(alicuot_ret),
+                            'alicuota_percepcion': values[2] == 'JU' and 3.6 or 1.8,
+                            'partner_id': partner_id.id,
+                            'company_id': self.company_id.id,
+                            'tag_id': self.jurisdiction_id.id,
+                            'from_date': self.l10n_ar_padron_from_date,
+                            'to_date': self.l10n_ar_padron_to_date,
+                        }
+                        self.env['res.partner.arba_alicuot'].sudo().create(vals)
