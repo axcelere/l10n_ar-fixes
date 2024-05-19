@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Argentina - Accounting Fixes',
-    'version': "1.0",
+    'version': "17.0.1.0.0",
     'author': 'Axcelere SA',
     'category': 'Accounting/Localizations/Account Charts',
     'depends': [
