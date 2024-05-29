@@ -1,5 +1,7 @@
 import base64
 import logging
+import tempfile
+import zipfile
 import os
 from io import BytesIO
 
@@ -24,6 +26,21 @@ class ResCompanyJurisdictionPadron(models.Model):
 
     def _condition_toclean_line(self, line, partners_vat):
         return ";0,00;0,00;00;00;" in line
+
+    def descompress_file(self, file_padron):
+        _logger.log(25, "Descompress zip file")
+        ruta_extraccion = "/tmp"
+        file = base64.decodestring(file_padron)
+        fobj = tempfile.NamedTemporaryFile(delete=False)
+        fname = fobj.name
+        fobj.write(file)
+        fobj.close()
+        f = open(fname, 'r+b')
+        data = f.read()
+        f.write(base64.b64decode(file_padron))
+        with zipfile.ZipFile(f, 'r') as zip_file:
+            zip_file.extractall(path=ruta_extraccion)
+            zip_file.close()
 
     def generate_alicuota_fromzip(self):
         # 26092023;01102023;31102023;20000163989;D;S;N;0,00;0,00;00;00;ETCHEVERRIGARAY JUAN  CARLOS
