@@ -32,23 +32,17 @@ class ResCompanyJurisdictionPadron(models.Model):
     def descompress_file(self, file_padron):
         _logger.log(25, "Descompress zip file")
         ruta_extraccion = "/tmp"
-        
-        try:
-            # Decodificar el archivo base64
-            file = base64.b64decode(file_padron)
-            
-            # Crear un archivo temporal en memoria
-            with tempfile.NamedTemporaryFile() as fobj:
-                # Escribir el contenido decodificado en el archivo temporal
-                fobj.write(file)
-                fobj.seek(0)  # Volver al principio del archivo
-
-                # Descomprimir el archivo zip en memoria
-                with zipfile.ZipFile(fobj, 'r') as zip_file:
-                    zip_file.extractall(path=ruta_extraccion)
-            
-        except Exception as e:
-            _logger.error("Error during file decompression: %s", e)
+        file = base64.b64decode(file_padron)
+        fobj = tempfile.NamedTemporaryFile(delete=False)
+        fname = fobj.name
+        fobj.write(file)
+        fobj.close()
+        f = open(fname, 'r+b')
+        data = f.read()
+        f.write(base64.b64decode(file_padron))
+        with zipfile.ZipFile(f, 'r') as zip_file:
+            zip_file.extractall(path=ruta_extraccion)
+            zip_file.close()
 
     def generate_alicuota_fromzip(self):
         # 26092023;01102023;31102023;20000163989;D;S;N;0,00;0,00;00;00;ETCHEVERRIGARAY JUAN  CARLOS
@@ -148,21 +142,3 @@ class ResCompanyJurisdictionPadron(models.Model):
                         }
                         self.env['res.partner.arba_alicuot'].sudo().create(vals)
 
-
-    def _get_aliquit(self, partner):
-        padron_types = ["Per", "Ret"]
-        nro = False
-        aliquot_ret = 0.0
-        aliquot_per = 0.0
-        for padron_type in padron_types:
-            path_file = self.find_file("/tmp/", padron_type)
-            if not path_file:
-                self.descompress_file(self.file_padron)
-                path_file = self.find_file("/tmp/", padron_type)
-            if path_file and partner.vat:
-                nro, aliquot = self.find_aliquot("/tmp/" + path_file, partner.vat)
-                if padron_type == "Per":
-                    aliquot_per = aliquot and aliquot.replace(",", ".")
-                else:
-                    aliquot_ret = aliquot and aliquot.replace(",", ".")
-        return nro, aliquot_ret, aliquot_per
