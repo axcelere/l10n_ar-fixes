@@ -3,4 +3,5 @@
 # directory
 ##############################################################################
 from . import res_company
-from . import res_company_jurisdiction_padron
+from . import res_company_jurisdiction_padron 
+from . import account_tax
