@@ -46,6 +46,7 @@
     #     'python': ['pyafipws'],
     # },
     'installable': True,
+    'license': 'LGPL-3',
     'name': 'Automatic Argentinian Withholdings on Payments',
     'version': "17.0.1.0.0",
 }
