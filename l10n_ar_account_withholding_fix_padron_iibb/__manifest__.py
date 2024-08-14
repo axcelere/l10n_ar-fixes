@@ -48,4 +48,5 @@
     'installable': True,
     'name': 'Automatic Argentinian Withholdings on Payments',
     'version': "16.0.1.0.0",
+    'license': 'LGPL-3',
 }
