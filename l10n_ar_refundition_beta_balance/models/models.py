@@ -28,6 +28,8 @@ class AccountMove(models.Model):
                 return
 
         unbalanced_moves = self._get_unbalanced_moves(container)
+        if not unbalanced_moves:
+            return
         for move_id, sum_debit, sum_credit in unbalanced_moves:
             move = self.browse(move_id)
             if move.journal_id.refundition_forced_account_id:
@@ -45,7 +47,6 @@ class AccountMove(models.Model):
                     line['debit'] = 0
                     line['credit'] = abs(sum_debit - sum_credit)
                 move.write({'line_ids': [(0, 0, line)]})
-                # move._post(soft=True)
 
         unbalanced_moves = self._get_unbalanced_moves(container)
         if not unbalanced_moves:
