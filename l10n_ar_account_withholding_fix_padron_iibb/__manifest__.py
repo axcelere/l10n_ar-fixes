@@ -32,7 +32,7 @@
         # 'views/afip_tabla_ganancias_alicuotasymontos_view.xml',
         # 'views/account_payment_view.xml',
         # 'views/res_partner_arba_alicuot_views.xml',
-        'views/res_company_jurisdiction_padron_view.xml',
+        # 'views/res_company_jurisdiction_padron_view.xml',
         # 'views/res_partner_view.xml',
         # 'views/account_tax_view.xml',
     ],
@@ -48,5 +48,5 @@
     'installable': True,
     'license': 'LGPL-3',
     'name': 'Automatic Argentinian Withholdings on Payments',
-    'version': "17.0.1.0.0",
+    'version': "18.0.1.0.0",
 }
