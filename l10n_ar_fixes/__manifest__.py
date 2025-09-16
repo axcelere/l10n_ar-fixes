@@ -5,7 +5,7 @@
     'author': 'Axcelere SA',
     'category': 'Accounting/Localizations/Account Charts',
     'depends': [
-        'l10n_ar',
+        # 'l10n_ar',
     ],
     'data': [
     ],
